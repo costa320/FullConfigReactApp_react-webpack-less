@@ -12,7 +12,7 @@ export default class App extends Component {
             <div >
                 <span className={App_less.color_blue}>HELLO!
                 </span>
-                <span className={App_css.color_green}>HELLO!
+                <span className={App_css.color_red}>HELLO!
                 </span>
             </div>
 
