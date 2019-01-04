@@ -1,25 +1,48 @@
+const webpack = require('webpack');
 const path = require('path');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const dotenv = require('dotenv');
 
-const _HtmlWebPackPlugin = new HtmlWebPackPlugin({template: "./public/index.html", filename: "index.html"});
-const _MiniCssExtractPlugin = new MiniCssExtractPlugin({filename: "css/[name].css", chunkFilename: "[id].css"})
+const _HtmlWebPackPlugin = new HtmlWebPackPlugin({
+    template: "./public/index.html",
+    filename: "index.html"
+});
+const _MiniCssExtractPlugin = new MiniCssExtractPlugin({
+    filename: "css/[name].css",
+    chunkFilename: "[id].css"
+});
 
-const WebpackConfig = {
 
-    output: {
-        path: path.resolve(__dirname, "build"),
-        filename: 'js/main.js'
-    },
-    module: {
-        rules: [
-            {
+
+
+module.exports = env => {
+    /* 
+        const envKeys = Object.keys(env).reduce((prev, next) => {
+            prev[`process.env.${next}`] = JSON.stringify(env[next]);
+            return prev;
+        }, {}); */
+    const DefinePlugin = new webpack.DefinePlugin({
+        'process.env': {
+            enviroment: 'DEV'
+        }
+    });
+
+    return {
+        entry: "./src/index.js",
+        devtool: 'source-map',
+
+        output: {
+            path: path.resolve(__dirname, "build"),
+            filename: 'js/main.js',
+            publicPath: '/'
+        },
+        module: {
+            rules: [{
                 test: /\.html$/,
-                use: [
-                    {
-                        loader: "html-loader"
-                    }
-                ]
+                use: [{
+                    loader: "html-loader"
+                }]
             }, {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
@@ -28,45 +51,55 @@ const WebpackConfig = {
                 }
             }, {
                 test: /\.css$/,
-                use: [
-                    {
-                        loader: "style-loader"
-                    }, {
-                        loader: "css-loader",
-                        options: {
-                            modules: true,
-                            importLoaders: 1,
-                            localIdentName: "[name]_[local]_[hash:base64]",
-                            sourceMap: true
-                        }
-                    }
-                ]
+                use: ['style-loader', 'css-loader']
             }, {
                 test: /\.less$/,
-                use: [
-                    {
-                        loader: "style-loader"
-                    }, {
-                        loader: "css-loader",
-                        options: {
-                            sourceMap: true,
-                            modules: true,
-                            localIdentName: "[local]___[hash:base64:5]"
-                        }
-                    }, {
-                        loader: "less-loader"
+                use: [{
+                    loader: "style-loader"
+                }, {
+                    loader: "css-loader",
+                    options: {
+                        sourceMap: true,
+                        modules: true,
+                        localIdentName: "[local]___[hash:base64:5]"
                     }
-                ]
-            }
-        ]
+                }, {
+                    loader: "less-loader"
+                }]
+            }, {
+                test: /\.(ttf|eot|woff2?)$/,
+                loaders: [{
+                    loader: 'url-loader',
+                    options: {
+                        limit: 50000,
+                        name: "./fonts/[name].[ext]"
+                    }
+                }]
+            }, {
+                test: /\.(png|jp(e*)g|svg)$/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        limit: 8000, // Convert images < 8kb to base64 strings
+                        name: 'images/[hash]-[name].[ext]'
+                    }
+                }]
+            }]
 
-    },
-    optimization: {
-        splitChunks: {
-            chunks: 'all'
-        }
-    },
-    plugins: [_HtmlWebPackPlugin]
+        },
+        optimization: {
+            /*  splitChunks: {
+                 chunks: 'all'
+             } */
+        },
+        devServer: {
+
+            historyApiFallback: true,
+
+            contentBase: path.join(__dirname, 'build'),
+            compress: true,
+            port: 8080
+        },
+        plugins: [_HtmlWebPackPlugin, DefinePlugin]
+    }
 };
-
-module.exports = WebpackConfig;
