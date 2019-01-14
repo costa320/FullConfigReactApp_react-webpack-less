@@ -1,2 +1,2 @@
 # FullConfigReactApp_react-webpack-less
-Full config react app with less configuration, with webpack. From scratch
+Full config react app with less and sass configuration, with webpack. From scratch
