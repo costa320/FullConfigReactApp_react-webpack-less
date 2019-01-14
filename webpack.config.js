@@ -53,6 +53,18 @@ module.exports = env => {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
             }, {
+                test: /\.scss$/,
+                use: [{
+                        loader: "style-loader"
+                    },
+                    {
+                        loader: "css-loader",
+                    },
+                    {
+                        loader: "sass-loader"
+                    }
+                ]
+            }, {
                 test: /\.less$/,
                 use: [{
                     loader: "style-loader"
@@ -98,8 +110,8 @@ module.exports = env => {
 
             contentBase: path.join(__dirname, 'build'),
             compress: true,
-            port: 8080
+            port: 5000
         },
-        plugins: [_HtmlWebPackPlugin, DefinePlugin]
+        plugins: [_HtmlWebPackPlugin, DefinePlugin, _MiniCssExtractPlugin]
     }
 };
