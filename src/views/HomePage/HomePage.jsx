@@ -11,10 +11,13 @@ export default class HomePage extends Component {
     render() {
         return (
             <div className="">
+
+                <span className={mainContainer + ''}>Colore Verde -less</span>
+
                 <div id='COMPONENT'>
-                    <span className={'mainContainer_ '}>Colore rosso</span>
+                    <span className={'mainContainer_ '}>Colore rosso -scss file 1</span>
                 </div>
-                <span className={'mainContainer_ '}>Colore Verde</span>
+                <span className={'mainContainer_ '}>Colore Verde -scss file 2</span>
             </div>
         );
     }
