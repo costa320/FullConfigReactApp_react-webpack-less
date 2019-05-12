@@ -22,9 +22,9 @@ module.exports = env => {
             prev[`process.env.${next}`] = JSON.stringify(env[next]);
             return prev;
         }, {}); */
-    const DefinePlugin = new webpack.DefinePlugin({
+   const DefinePlugin = new webpack.DefinePlugin({
         'process.env': {
-            enviroment: 'DEV'
+            enviroment: JSON.stringify(env.enviroment)
         }
     });
 
