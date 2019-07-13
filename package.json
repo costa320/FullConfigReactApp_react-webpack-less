@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start:dev": "webpack-dev-server --open --mode development",
-    "build": "webpack --mode production"
+    "start:dev": "webpack-dev-server --env.enviroment=DEV_START --open --mode development",
+    "build": "webpack --env.enviroment=DEV --mode production"
   },
   "author": "",
   "license": "ISC",
@@ -35,7 +35,7 @@
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "url-loader": "^1.1.2",
-    "webpack": "^4.28.4",
+    "webpack": "^4.35.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.14"
   }
